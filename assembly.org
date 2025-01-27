@@ -8,7 +8,9 @@
  - https://www.codecademy.com/learn/computer-architecture-assembly-language
  - https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/resources/intro-to-assembly-language-8-13-/
  - https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file (zerg)
-  
+ - https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
+
+ 
 * General 
 
  - X86 registers
@@ -23,6 +25,87 @@
 | RDI    | EDI    | DI     | N/A         | DIL        | Destination        |
 | RSP    | ESP    | SP     | N/A         | SPL        | Stack Pointer      |
 | RBP    | EBP    | BP     | N/A         | BPL        | Stack Base Pointer |
+
+
+* https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file
+
+ - https://www.cs.drexel.edu/~bls96/museum/cardiac.html
+
+ - https://en.wikipedia.org/wiki/Signedness
+
+#+begin_quote
+In computing, signedness is a property of data types representing numbers in computer programs.
+
+A numeric variable is *signed*:
+ - if it can represent both *positive and negative* numbers,
+
+And *unsigned*:
+ - if it can only represent non-negative numbers (*zero or positive numbers*).
+#+end_quote   
+
+ 
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#bits-bytes-words-and-number-bases][Bits, Bytes, Words, and Number Bases]]
+
+ | Bit | Byte                     | Word                         | Number Base       |
+ |-----+--------------------------+------------------------------+-------------------|
+ | 0/1 | 8bits                    | 2 bytes grouped (16 bits)    | binary            |
+ |     | 76543210                 | 5432109876543210             | base 2            |
+ |     | unsigned value 0-255     | bit 15 "High order sign bit" | add a lead 0      |
+ |     | signed value of -128/127 |                              | and terminating b |
+ |     | Bit 7 the "sign bit":    |                              | 011111111b        |
+ |     | - 1: negative            |                              | ----------------- |
+ |     | - 2: positve             |                              | hexadecimal       |
+ |     |                          |                              | nybble:           |
+ |     |                          |                              | - 4 bits (0-15)   |
+ |     |                          |                              |                   |
+
+
+unsigned value ranges for common word sizes
+
+#+begin_quote
+1 bit:  0-1
+2 bits: 0-3
+3 bits: 0-7
+4 bits: 0-15
+5 bits, 0-31
+...
+#+end_quote
+
+The pattern here is that the max value is 2 to the number of bits minus 1.
+That is for 5 bits, the max value 31 is 2 to the 5th power (32) minus 1.
+
+When we convert a binary byte to hex, we visualize it something like this:
+
+#+begin_quote
+76543210 is 7654 3210
+#+end_quote
+
+We've grouped the bits as two nybbles.
+We can then convert the two nybbles (4 bits each) to two hex digits.
+
+| Binary | Hex |
+|--------+-----|
+|   0000 |   0 |
+|   0001 |   1 |
+|   0010 |   2 |
+|   0011 |   3 |
+|   0100 |   4 |
+|   0101 |   5 |
+|   0110 |   6 |
+|   0111 |   7 |
+|   1000 |   8 |
+|   1001 |   9 |
+|   1010 |   A |
+|   1011 |   B |
+|   1100 |   C |
+|   1101 |   D |
+|   1110 |   E |
+|   1111 |   F |
+
+
+For example, we visualize the binary value 010100101b as 1010 0101.
+Using the table above, we see 1010 is A, and 0101 is 5. So the byte value is A5.
+We represent hex numbers in assembly as 0xa5, or 0a5h, or sometimes $a5.
 
 
 * ray nasmtutorial
