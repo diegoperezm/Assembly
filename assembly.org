@@ -1,0 +1,58 @@
+
+
+* Resources
+
+ - https://www.nasm.us/doc/
+ - https://pacman128.github.io/pcasm/
+ - https://cs.lmu.edu/~ray/notes/nasmtutorial/
+ - https://www.codecademy.com/learn/computer-architecture-assembly-language
+ - https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/resources/intro-to-assembly-language-8-13-/
+ - https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file (zerg)
+  
+* General 
+
+ - X86 registers
+
+| 64-bit | 32-bit | 16-bit | 8 high bits | 8 low bits | Description        |
+|--------+--------+--------+-------------+------------+--------------------|
+| RAX    | EAX    | AX     | AH          | AL         | Accumulator        |
+| RBX    | EBX    | BX     | BH          | BL         | Base               |
+| RCX    | ECX    | CX     | CH          | CL         | Counter            |
+| RDX    | EDX    | DX     | DH          | DL         | Data               |
+| RSI    | ESI    | SI     | N/A         | SIL        | Source             |
+| RDI    | EDI    | DI     | N/A         | DIL        | Destination        |
+| RSP    | ESP    | SP     | N/A         | SPL        | Stack Pointer      |
+| RBP    | EBP    | BP     | N/A         | BPL        | Stack Base Pointer |
+
+
+* ray nasmtutorial
+
+https://cs.lmu.edu/~ray/notes/nasmtutorial/
+
+#+begin_src asm  
+	global _start
+
+	section .text
+_start: mov     rax, 1       ; sys call for write
+	mov     rdi, 1       ; file handle 1 is stdout
+	mov     rsi, message ; address of string to output
+	mov     rdx, 13      ; number of bytes
+	syscall              ; invoke os to d the write
+        mov     rax, 60      ; sys call for exit
+	xor     rdi, rdi     ; exit code 0
+        syscall
+	section .data
+ message: db    "Hello, world", 10 ; note the newline at the end
+#+end_src
+
+
+#+begin_src sh  :eval no 
+nasm -fmacho64 hello.asm && ld hello.o && ./a.out
+#+end_src
+
+
+
+
+
+
+
