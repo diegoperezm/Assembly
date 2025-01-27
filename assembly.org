@@ -107,6 +107,59 @@ For example, we visualize the binary value 010100101b as 1010 0101.
 Using the table above, we see 1010 is A, and 0101 is 5. So the byte value is A5.
 We represent hex numbers in assembly as 0xa5, or 0a5h, or sometimes $a5.
 
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#math][Math]]
+
+Adding two values of the same word size:
+ The byte 100 plus the byte 50 = 150. 100 + 50 = 150.
+
+This works for signed and unsigned values.
+The math is always unsigned, but the result is up to you.
+If the high order bit (bit 7 of a byte, bit 15 of a 16-bit word...) is 1, the signed value is negative.
+
+What happens when we add a byte value to a 16-bit word value?
+ - The byte value is really a 16-bit value, but the upper 8 bits are zeros.
+ - That is, 0xaa can be visualized as 0x00aa. We just add the full 16-bit values together.
+
+What happens when we add 1 to a byte size value of 255?
+We only have 8 bits for the result, but we have 9 bits of actual value.
+That is, 255 + 1 is 256.
+Represented in binary, you have 255 = 011111111b + 1 = 0100000000b (9 bits!).
+The 9th bit is basically ignored as far as the result byte goes.
+So if you look at the lower 8 bits of our 9 bit result, we get 0!
+
+All this extends to 32 bit and 64 bit words.
+
+Multiplication of two values requires a double-sized result,
+or you lose a lot more than just the 9th bit.
+
+Consider 255 x 255 = 65025 (0xfe01), which fits in 16 bits but not in 8.
+If we have a byte result, we get 0x01 due to the overflow, losing over 65000 in result value.
+
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#boolean-algebra][Boolean Algebra]]
+
+Single value operands, 4 combinations possible (truth table):
+
+#+begin_quote
+AND (if both operands are true, the result is true)
+0 & 0 = 0
+0 & 1 = 0
+1 & 0 = 0
+1 & 1 = 1
+
+OR (if either operand is true, the result is true)
+0 | 0 = 0
+0 | 1 = 1
+1 | 0 = 1
+1 | 1 = 1
+
+XOR (if only one operand is true, the result is true)
+0 ^ 0 = 0
+0 ^ 1 = 1
+1 ^ 0 = 1
+1 ^ 1 = 0
+#+end_quote
+
+
 
 * ray nasmtutorial
 
