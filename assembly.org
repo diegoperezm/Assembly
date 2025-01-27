@@ -139,7 +139,7 @@ If we have a byte result, we get 0x01 due to the overflow, losing over 65000 in 
 
 Single value operands, 4 combinations possible (truth table):
 
-#+begin_quote
+#+begin_src
 AND (if both operands are true, the result is true)
 0 & 0 = 0
 0 & 1 = 0
@@ -157,7 +157,7 @@ XOR (if only one operand is true, the result is true)
 0 ^ 1 = 1
 1 ^ 0 = 1
 1 ^ 1 = 0
-#+end_quote
+#+end_src
 
 
 
