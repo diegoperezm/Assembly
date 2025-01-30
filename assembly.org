@@ -159,6 +159,66 @@ XOR (if only one operand is true, the result is true)
 1 ^ 1 = 0
 #+end_src
 
+The ~ (1's complement) operator inverts the bits in the word.
+
+#+begin_src asm
+00000000 & 00000000 = 0
+00000000 & 00000001 = 0
+...
+#+end_src
+
+BUT, we have 8 bits, so the operation is performed on all 8 bits in the two operands.
+
+#+begin_src asm
+   10000000 
+OR 00000001 
+   --------
+   ^      ^
+=  10000001
+   ^      ^
+   
+NOT 10000001
+=   01111110
+#+end_src
+
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#bit-shifting][Bit Shifting]]
+
+shift a bit to the left (<< operator in C) 1-7 bits:
+
+#+begin_src asm 
+001111101b << 1 = 011111010b
+
+ 001111101b  shifted left becomes
+ ////////
+x011111010b  (bit 0 becomes 0, bit 1 becomes 1, bit 2 becomes 0)
+#+end_src
+
+Note that we have the overflow problem here, as we did with addition. We have an upper bit that ends up in the "bit bucket" (thrown away).
+
+A *left shift* of *1 bit is effectively a multiplication by 2*.
+Consider 001b<<1 is 010b, or 2.
+A left shift of *2 bits is a multiply by 4*, and so on.
+
+Shifting to the right , but we now end up with the high bit being cleared and the low bit in the bit bucket.
+A *right shift* of *1 bit is effectively a divide by 2*.
+But this right shift will take a negative number and make it positive because the sign bit is cleared. 
+
+So we need a second kind of right shift (*arithmetic shift right*)
+for signed values that sets the high bit in the result to the high bit in the initial value.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 * ray nasmtutorial
@@ -180,6 +240,9 @@ _start: mov     rax, 1       ; sys call for write
 	section .data
  message: db    "Hello, world", 10 ; note the newline at the end
 #+end_src
+
+A typical use of the AND operator is to clear bits in a value. If we AND with a value that is the inverse of a power of 2, we are simply clearing a bit. n AND !4 clears bit 3 in n.
+
 
 
 #+begin_src sh  :eval no 
