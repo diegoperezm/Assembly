@@ -226,33 +226,54 @@ Note that
 When you and with 00111b, you are clearing bit 3
 #+end_src
 
+
+ - [[https://en.wikibooks.org/wiki/C_Programming/stdint.h#Exact-width_integer_types][Exact width integer types]]
+ 
+| Specifier | Signing  | Bits | Bytes | Minimum Value | Maximum Value |
+|-----------+----------+------+-------+---------------+---------------|
+| int8_t    | Signed   |    8 |     1 | −2^{7}        | 2^{7}         |
+| uint8_t   | Unsigned |    8 |     1 | 0             | 2^{8}         |
+| int16_t   | Signed   |   16 |     2 | −2^{15}       | 2^{15}        |
+| uint16_t  | Unsigned |   16 |     2 | 0             | 2^{16}        |
+| int32_t   | Signed   |   32 |     4 | −2^{31}       | 2^{31}        |
+| uint32_t  | Unsigned |   32 |     4 | 0             | 2^{32}        |
+| int64_t   | Signed   |   64 |     8 | −2^{63}       | 2^{63}        |
+| uint64_t  | Unsigned |   64 |     8 | 0             | 2^{64}        |
+
+
 Set bit, chatGPT example: 
 
-#+begin_src c
+#+begin_src C :exports both  :results output 
 #include <stdio.h>
+#include <stdint.h>
+
+uint16_t int_to_bin(uint16_t  k); 
 
 int main(void) {
-    unsigned int n = 5; // 00000101 en binario
-    printf("Antes de establecer el bit 3: %u\n", n);
-    
-    n = n | (1 << 3); // Establece el bit 3 (contando desde 0)
-    
-    printf("Después de establecer el bit 3: %u\n", n);
+    uint16_t n = 9; 
+    printf("before setting the bit 3: %u  ->   %u \n", n, int_to_bin(n));
+    n = n | (1 << 3); // set bit 3 (from  0)
+    printf("after setting the  bit 3: %u ->  %u \n", n, int_to_bin(n));
     return 0;
 }
 
-// Antes de establecer el bit 3: 5
-// Después de establecer el bit 3: 13
+uint16_t int_to_bin(uint16_t  k) { 
+  return ( k==0 || k == 1 ? k : ((k%2)+10*int_to_bin(k/2)));
+}
 
 #+end_src
 
-| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
-|-----+----+----+----+---+---+---+---|
-|     |    |    |    |   | 1 | 0 | 1 |
-|     |    |    |    | 1 | 1 | 0 | 1 |
-
+#+RESULTS:
+: before setting the bit 3: 9  ->   1001 
+: after setting the  bit 3: 9 ->  1001 
 
 #+begin_src 
+OR (if either operand is true, the result is true)
+0 | 0 = 0
+0 | 1 = 1
+1 | 0 = 1
+1 | 1 = 1
+
 n | (1<<3) 
 
   00000101  (n = 5)
