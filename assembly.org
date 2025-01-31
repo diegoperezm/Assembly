@@ -300,3 +300,55 @@ nasm -fmacho64 hello.asm && ld hello.o && ./a.out
 
 
 
+* GDB
+
+https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_54.html
+
+#+begin_src 
+Output formats
+By default, GDB prints a value according to its data type. Sometimes this is not what you want.
+For example, you might want to print a number in hex, or a pointer in decimal.
+Or you might want to view data in memory at a certain address as a character string or as an instruction.
+To do these things, specify an output format when you print a value.
+
+The simplest use of output formats is to say how to print a value already computed.
+This is done by starting the arguments of the print command with a slash and a format letter.
+The format letters supported are:
+
+x
+Regard the bits of the value as an integer, and print the integer in hexadecimal.
+
+d
+Print as integer in signed decimal.
+
+u
+Print as integer in unsigned decimal.
+
+o
+Print as integer in octal.
+
+t
+Print as integer in binary. The letter `t' stands for "two". (2)
+
+a
+Print as an address, both absolute in hexadecimal and as an offset from the nearest preceding symbol.
+You can use this format used to discover where (in what function) an unknown address is located:
+(gdb) p/a 0x54320
+$3 = 0x54320 <_initialize_vx+396>
+The command info symbol 0x54320 yields similar results. See section Examining the Symbol Table.
+
+c
+Regard as an integer and print it as a character constant.
+
+f
+Regard the bits of the value as a floating point number and print using typical floating point syntax.
+For example, to print the program counter in hex (see section Registers), type
+
+p/x $pc
+
+Note that no space is required before the slash; this is because command names in GDB cannot contain a slash.
+To reprint the last value in the value history with a different format,
+you can use the print command with just a format and no expression.
+
+For example, `p/x' reprints the last value in hex.
+#+end_src
