@@ -83,24 +83,24 @@ When we convert a binary byte to hex, we visualize it something like this:
 We've grouped the bits as two nybbles.
 We can then convert the two nybbles (4 bits each) to two hex digits.
 
-| Binary | Hex |
-|--------+-----|
-|   0000 |   0 |
-|   0001 |   1 |
-|   0010 |   2 |
-|   0011 |   3 |
-|   0100 |   4 |
-|   0101 |   5 |
-|   0110 |   6 |
-|   0111 |   7 |
-|   1000 |   8 |
-|   1001 |   9 |
-|   1010 |   A |
-|   1011 |   B |
-|   1100 |   C |
-|   1101 |   D |
-|   1110 |   E |
-|   1111 |   F |
+| Binary | Hex | Dec |
+|--------+-----+-----|
+|   0000 |   0 |   0 |
+|   0001 |   1 |   1 |
+|   0010 |   2 |   2 |
+|   0011 |   3 |   3 |
+|   0100 |   4 |   4 |
+|   0101 |   5 |   5 |
+|   0110 |   6 |   6 |
+|   0111 |   7 |   7 |
+|   1000 |   8 |   8 |
+|   1001 |   9 |   9 |
+|   1010 |   A |  10 |
+|   1011 |   B |  11 |
+|   1100 |   C |  12 |
+|   1101 |   D |  13 |
+|   1110 |   E |  14 |
+|   1111 |   F |  15 |
 
 
 For example, we visualize the binary value 010100101b as 1010 0101.
