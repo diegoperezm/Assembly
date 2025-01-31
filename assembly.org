@@ -199,6 +199,22 @@ A *left shift* of *1 bit is effectively a multiplication by 2*.
 Consider 001b<<1 is 010b, or 2.
 A left shift of *2 bits is a multiply by 4*, and so on.
 
+ - left shift of n bits:
+
+| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 | Dec |
+|-----+----+----+----+---+---+---+---+-----|
+|     |    |    |    |   | 0 | 0 | 1 |   1 |
+|     |    |    |    |   | 0 | 1 | 0 |   2 |
+|-----+----+----+----+---+---+---+---+-----|
+|     |    |    |    |   | 0 | 0 | 1 |   1 |
+|     |    |    |    |   | 1 | 0 | 0 |   4 |
+|-----+----+----+----+---+---+---+---+-----|
+|     |    |    |    |   | 0 | 0 | 1 |   1 |
+|     |    |    |    | 1 | 0 | 0 | 0 |   8 |
+|-----+----+----+----+---+---+---+---+-----|
+|     |    |    |    |   | 0 | 0 | 1 |   1 |
+|     |    |    |  1 | 0 | 0 | 0 | 0 |  16 |
+
 Shifting to the right , but we now end up with the high bit being cleared and the low bit in the bit bucket.
 A *right shift* of *1 bit is effectively a divide by 2*.
 But this right shift will take a *negative number and make it positive* because the *sign bit is cleared*. 
