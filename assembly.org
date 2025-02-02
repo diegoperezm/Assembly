@@ -605,26 +605,26 @@ For example, if AX contains 0x0102 and we load 0x03 into AL, AX will contain 0x0
 | R13    | R13D   | R13W   | R13B        |
 | R14    | R14D   | R14W   | R14B        |
 | R15    | R15D   | R15W   | R15B        |
-|        |        |        |             |
+
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#special-purpose-registers][Special Purpose Register]]
 
 
+| 64-bit | 32-bit | 16-bit | Description        |
+|--------+--------+--------+--------------------|
+| RCX    | ECX    | CX     | Counter            |
+| RDX    | EDX    | DX     | Data               |
+| RSI    | ESI    | SI     | Source             |
+| RDI    | EDI    | DI     | Destination        |
+| RBP    |        | BP     | Stack Base Pointer |
 
 
+The RCX/ECX/CX (CX) register doubles as a counter for dedicated instructions.
+The AMD64 instruction set includes instructions to fill, copy, and compare memory, and loops that use this register as the number of bytes/words/dwords/qwords to fill/copy/compare.
+The special loop instructions use this register as the loop counter as well.
 
- 
-#+begin_src shell :results output
-echo 'ibase=16; 102' | bc &&  echo 'ibase=16; 103'  | bc && echo 'ibase=2; 258'  | bc
-#+end_src
+The RSI/ESI/SI and RDI/EDI/DI/ registers are general purpose "source" and "destination" registers for the fill, copy, and compare instructions.
 
-#+RESULTS:
-: 258
-: 259
-: 7
-
-
-
-
-
+The RBP register is a general purpose register that is typically used as a base address register or by high level language compilers to maintain function stack frames (arguments, return address, and local variables allocated on the stack).
 
 
 * ray nasmtutorial
