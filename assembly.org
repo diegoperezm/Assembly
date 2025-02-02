@@ -465,12 +465,29 @@ Signed integer example:\\
 
  - Endiannes  ( [[https://en.wikipedia.org/wiki/Endianness][reference: endiannes, wikipedia]] ) :
 
-
-
 [[file:./img/32bit-Endianess.svg.png]]
 
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#mmu][MMU]]
 
-   
+In modern operating systems, the CPU uses an MMU (*Memory Management Unit*) to assign a subset of the system's memory to each program that you run. 
+
+The MMU maps an address in physical memory to a logical address that the program sees and uses.
+
+When a program is launched:
+
+ - it is allocated a small amount of RAM
+   - enough for the program's:
+      - code 
+      - variables 
+      - stack
+      - and a minimal heap
+
+As the program needs more stack or more heap, the OS adds physical memory to the program's address space using the MMU. The program grows on demand.
+
+
+
+
+
 
 * ray nasmtutorial
 
