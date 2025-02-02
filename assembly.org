@@ -609,13 +609,13 @@ For example, if AX contains 0x0102 and we load 0x03 into AL, AX will contain 0x0
 *** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#special-purpose-registers][Special Purpose Register]]
 
 
-| 64-bit | 32-bit | 16-bit | Description        |
-|--------+--------+--------+--------------------|
-| RCX    | ECX    | CX     | Counter            |
-| RDX    | EDX    | DX     | Data               |
-| RSI    | ESI    | SI     | Source             |
-| RDI    | EDI    | DI     | Destination        |
-| RBP    |        | BP     | Stack Base Pointer |
+| 64-bit | 32-bit | 16-bit | Description  |
+|--------+--------+--------+--------------|
+| RCX    | ECX    | CX     | Counter      |
+| RDX    | EDX    | DX     | Data         |
+| RSI    | ESI    | SI     | Source       |
+| RDI    | EDI    | DI     | Destination  |
+| RBP    |        |        | Base address |
 
 
 The RCX/ECX/CX (CX) register doubles as a counter for dedicated instructions.
@@ -626,6 +626,40 @@ The RSI/ESI/SI and RDI/EDI/DI/ registers are general purpose "source" and "desti
 
 The RBP register is a general purpose register that is typically used as a base address register or by high level language compilers to maintain function stack frames (arguments, return address, and local variables allocated on the stack).
 
+
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#cpu-control-registers][CPU Control Registers]]
+
+****  Stack 
+
+The RSP register contains the address of the last thing pushed on the processor stack. You can push registers on the stack to preserve their values, you can pop them to restore their values, address values already on the stack by index, etc.
+
+| 64-bit | Description   |
+|--------+---------------|
+| RSP    | Stack Pointer |
+
+**** Instruction Pointer 
+
+The RIP register contains the address of the next instruction to be executed.
+The CPU automatically adds the correct number to it as it executes instructions to keep it pointed at the correct next instruction.
+When you call a subroutine, the RIP is pushed on the RSP stack and RIP is loaded with the address of the subroutine.
+When the subroutine returns, the RIP that was pushed before the call is popped from the stack into RIP. Execution continues at the instruction after the call.
+
+**** Flags  
+
+The FLAGS register is 64 bits containing information provided by the CPU to the program, and commands from the program to the CPU. Not all the bits are used. 
+https://en.wikipedia.org/wiki/FLAGS_register
+
+ - set by the CPU is the Carry Flag
+  
+Example: if you add 1 to the AL register that contains 255, you will get AL=0, Carry = 1. If you add 1 to AL=254, the Carry will be 0.
+
+ - set by the program is the Direction Flag 
+If this is 0, the fill/copy/etc. instructions work from start address forward (auto-increments SI and DI). If this is 1, the operations are done backward (auto-decrement).
+
+The FLAGS register is there to use, but we might really only directly use the Carry bit and Direction bit. We might use the Carry bit to return a true/false result from a function. The CLC and STC instructions clear and set the Carry bit.
+
+
+ 
 
 * ray nasmtutorial
 
