@@ -1,0 +1,31 @@
+k: 13  
+k: 6  
+k: 3 
+k: 1  
+
+tmp: 1 
+tmp: 11 
+tmp: 110 
+tmp: 77 
+
+
+k: 13 
+k: 6  
+k: 3  
+k: 1  
+
+tmp: 1 
+tmp: 11 
+tmp: 110 
+tmp: 1101 
+
+Después de establecer el bit 3: 13 -> 1101 
+k: 9  (k % 2) + 10 : 11  
+k: 4  (k % 2) + 10 : 10  
+k: 2  (k % 2) + 10 : 10  
+k: 1  (k % 2) + 10 : 11  
+tmp: 1 
+tmp: 10 
+tmp: 100 
+tmp: 233 
+Después de establecer el bit 3: 9 -> 233 

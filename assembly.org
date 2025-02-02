@@ -378,7 +378,99 @@ LOW memory address
   
 #+end_src
 
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#elf-files-and-the-loader][ELF files and the loader]]
 
+
+The compiler/assembler/linker generate ELF formatted files.
+
+An ELF file is divided into various sections.
+The more common sections are:
+ - .text (code)
+ - .data [initialized data]
+ - .rodata read only data (constants)
+ - .bss (uninitialized data)
+ - and assorted debugging info sections
+
+ 1. The operating system program loader reads in the ELF file and allocates memory for the .text section and loads that data from the file into that memory.
+
+ 2. Then the loader allocates memory for the initialized data (.data) and reads that data from the file into that memory.
+
+ 3. Then the loader allocates memory for the constant data (.rodata) and reads that data from the file into that memory.
+
+ 4. The loader allocates memory for the .bss section.
+    Since the .bss section is uninitialized, it only needs to be allocated.
+
+ 5. The linker reads in intermediate object files (.o) and
+
+ 6. links them together to make the final executable.
+
+ 7. Each .o file may declare variables that might be accessed from other .o files and
+    to access variables that are defined in some other .o file.
+
+ 8. The linker fixes up the addresses in the final output so the code works as expected!
+
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#permissions-sections-and-privileged-instructions][Permissions (Sections and Privileged instructions)]]
+
+| Section | Permissions |
+|---------+-------------|
+| .data   | read/write  |
+| .bss    | read/write  |
+| .rodata | read only   |
+
+The way words of the different sizes are stored in memory is determined by the "endianess" of the CPU.
+
+ - Big Endian:
+      stores the high byte  first in memory
+ - Little Endian:
+      stores low byte first 
+
+
+ - Bit numbering ( [[https://en.wikipedia.org/wiki/Bit_numbering][reference: bit numbering, wikipedia]] ) 
+
+ 
+| 150 dec     | MSb |   |   |   |   |   |   | LSb |
+|-------------+-----+---+---+---+---+---+---+-----|
+| Bit Content |   1 | 0 | 0 | 1 | 0 | 1 | 1 |   0 |
+
+The *least significant bit* (LSb):
+  Is the bit position in a binary integer representing the binary 1s place of the integer.
+  AKA low-order bit or right-most bit.
+
+The *most significant bit* (MSb):
+ Represents the highest-order place of the vinary integer.
+ AKA high-order bit or left-most bit.
+
+Unsigned integer example:\\ 
+ - Value: 149
+ - Position of unit value (decimal 1 or 0) is bit position 0 (n=0)
+
+| 149 LSb0    | MSb |    |    |    |   |   |   | LSb |
+|-------------+-----+----+----+----+---+---+---+-----|
+| bit weight  | 128 | 64 | 32 | 16 | 8 | 4 | 2 |   1 |
+| bit content |   1 |  0 |  0 |  1 | 0 | 1 | 0 |   1 |
+
+
+Signed integer example:\\ 
+ - Value: 8 bit signed decimal  
+ - Two's complement method
+ - MSb: negative weight in signed integers (-128), the other bits have positive weights
+ - LSb: has weight 
+ - Signed value: -128+2 = -126
+
+| -126 LSb0   |  MSb |    |    |    |   |   |   | LSb |
+|-------------+------+----+----+----+---+---+---+-----|
+| bit weight  | -128 | 64 | 32 | 16 | 8 | 4 | 2 |   1 |
+| bit content |    1 |  0 |  0 |  0 | 0 | 0 | 1 |   0 |
+
+
+ - Endiannes  ( [[https://en.wikipedia.org/wiki/Endianness][reference: endiannes, wikipedia]] ) :
+
+
+
+[[file:./img/32bit-Endianess.svg.png]]
+
+
+   
 
 * ray nasmtutorial
 

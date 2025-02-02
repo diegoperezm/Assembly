@@ -1,0 +1,12 @@
+
+
+
+| Specifier  | Signing  | Bits | Bytes | Minimum Value                                   | Maximum Value                                      |
+| =int8_t=   | Signed   | 8    | 1     | −2^{7} which equals −128                        | 2^{7} − 1 which is equal to 127                    |
+| =uint8_t=  | Unsigned | 8    | 1     | 0                                               | 2^{8} − 1 which equals 255                         |
+| =int16_t=  | Signed   | 16   | 2     | −2^{15} which equals −32,768                    | 2^{15} − 1 which equals 32,767                     |
+| =uint16_t= | Unsigned | 16   | 2     | 0                                               | 2^{16} − 1 which equals 65,535                     |
+| =int32_t=  | Signed   | 32   | 4     | −2^{31} which equals −2,147,483,648             | 2^{31} − 1 which equals 2,147,483,647              |
+| =uint32_t= | Unsigned | 32   | 4     | 0                                               | 2^{32} − 1 which equals 4,294,967,295              |
+| =int64_t=  | Signed   | 64   | 8     | −2^{63} which equals −9,223,372,036,854,775,808 | 2^{63} − 1 which equals 9,223,372,036,854,775,807  |
+| =uint64_t= | Unsigned | 64   | 8     | 0                                               | 2^{64} − 1 which equals 18,446,744,073,709,551,615 |
