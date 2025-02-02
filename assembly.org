@@ -1,6 +1,14 @@
+#+OPTIONS: author:nil date:nil toc:nil  html-postamble:nil 
+#+LATEX_HEADER: \usepackage[left=2cm, right=2cm, top=1.5cm, bottom=2cm]{geometry}
+#+LATEX_HEADER: \usepackage[scaled]{helvet} \renewcommand\familydefault{\sfdefault}
+#+LATEX_HEADER: \usepackage{anyfontsize}
+#+LATEX_HEADER: \AtBeginDocument{\fontsize{14}{14}\selectfont}
 
 * Resources
 
+ - https://www.youtube.com/watch?v=GhTAoilsFUs
+ - https://learnopengl.com/
+ - https://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/
  - https://www.nasm.us/doc/
  - https://pacman128.github.io/pcasm/
  - https://cs.lmu.edu/~ray/notes/nasmtutorial/
