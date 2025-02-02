@@ -486,9 +486,29 @@ As the program needs more stack or more heap, the OS adds physical memory to the
 
 ** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#paging-and-swapping][Paging And Swapping]]
 
+Memory is allocated for the MMU in 4096 byte chunks (pages);
+this is required by the MMU implementation (hardware).
+
+When your program tries to access an address in memory that isn't mapped by the OS using the MMU,
+a *page fault exception* is raised. The OS sees this and might map in an additional page so that the access can succeed.
+
+Out Of Memory:
+ - compress programs and/or their data
+ - "page" one or more 4096 byte pages from memory to the system's swap file/partition
+ - swap out entire programs (and their data) to the swap file/partition.
+   - When those programs get to run, they have to be entirely read back into memory (and MMU set up), and perhaps swapping another program to disk
+
+The stack grows down from high memory.
+If the stack overflows (grows below the memory allocated for it),
+a page fault occurs and the OS can add additional pages to the memory map so the stack has more room.
+
+The heap initially has a small but reasonable amount of RAM allocated.
+It can be expanded using the sbrk syscall.
+This is what the malloc() function does in C, though the sbrk() function can be called directly if you know what you're doing.
 
 
 
+ 
 * ray nasmtutorial
 
 https://cs.lmu.edu/~ray/notes/nasmtutorial/
