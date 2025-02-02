@@ -566,6 +566,67 @@ depending on the complexity of the operation.
   - The add instruction takes just 1 clock cycle.
   - The store takes 5 as well.
   
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#x64amd64-registers][x64/amd64 Registers]]
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#general-purpose-registers][General Purpose Registers]] (8 Registers)
+
+| 64-bit (word) | 32-bit (word) | 16-bit (word) | 8 high bits | 8 low bits |
+|---------------+---------------+---------------+-------------+------------|
+| RAX           | EAX           | AX            | AH          | AL         |
+| RBX           | EBX           | BX            | BH          | BL         |
+| RCX           | ECX           | CX            | CH          | CL         |
+| RDX           | EDX           | DX            | DH          | DL         |
+
+
+When we use the registers whose size are smaller than 64 bits, the remaining bits in the register are not affected.
+
+For example, if AX contains 0x0102 and we load 0x03 into AL, AX will contain 0x0103.
+
+ - AX contains 0x0102  (chatGPT) 
+
+|     AX |   AH |   AL |
+|--------+------+------|
+| 0x0102 | 0x01 | 0x02 |
+
+ - Load 0x03 into AL: 
+
+|     AX |   AH |   AL |
+|--------+------+------|
+| 0x0103 | 0x01 | 0x03 |
+
+
+
+| 64-bit | 32-bit | 16-bit | 8 high bits |
+|--------+--------+--------+-------------|
+| R8     | R8D    | R8W    | R8B         |
+| R9     | R9D    | R9W    | R9B         |
+| R10    | R10D   | R10W   | R10B        |
+| R11    | R11D   | R11W   | R11B        |
+| R12    | R12D   | R12W   | R12B        |
+| R13    | R13D   | R13W   | R13B        |
+| R14    | R14D   | R14W   | R14B        |
+| R15    | R15D   | R15W   | R15B        |
+|        |        |        |             |
+
+
+
+
+
+ 
+#+begin_src shell :results output
+echo 'ibase=16; 102' | bc &&  echo 'ibase=16; 103'  | bc && echo 'ibase=2; 258'  | bc
+#+end_src
+
+#+RESULTS:
+: 258
+: 259
+: 7
+
+
+
+
+
+
+
 * ray nasmtutorial
 
 https://cs.lmu.edu/~ray/notes/nasmtutorial/
