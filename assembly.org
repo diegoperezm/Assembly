@@ -16,7 +16,8 @@
  - https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/resources/intro-to-assembly-language-8-13-/
  - https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file (zerg)
  - https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf
-
+ - https://www.felixcloutier.com/x86/
+ -  https://software.intel.com/en-us/download/intel-64-and-ia-32-architectures-sdm-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4
  
 * General 
 
@@ -658,8 +659,32 @@ If this is 0, the fill/copy/etc. instructions work from start address forward (a
 
 The FLAGS register is there to use, but we might really only directly use the Carry bit and Direction bit. We might use the Carry bit to return a true/false result from a function. The CLC and STC instructions clear and set the Carry bit.
 
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#amd64-instruction-set][AMD64 Instruction Set]]
 
- 
+ - https://www.felixcloutier.com/x86/
+
+The format of a line of source code in assembly is:
+
+#+begin_src 
+[optional label] instruction
+or
+[optional label] instruction operand
+or
+[optional label] instruction operand1, operand2
+#+end_src
+
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#assembly-source][Assembly source]]
+
+ - NASM (Intel syntax)
+    - destination 
+    - source
+
+ - GAS (AT&T syntax)
+    - source
+    - destination 
+
+
+
 
 * ray nasmtutorial
 
