@@ -521,10 +521,51 @@ Example: push a random number on the stack and then return, Your program starts 
  - General Protection
 
 Attempts to execute a privileged instruction
-
  
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#alu][ALU]]
 
+The math capability is implemented in the ALU (Arithmetic-Logic Unit) of the CPU. The CPU provides some (small) number of general purpose "registers" and the ALU implements the add circuitry just between those registers.
 
+You have to load your operand or operands into registers to perform math, then you can store the result to a variable in memory.
+
+Example: \\
+
+  - To add two numbers
+  - at memory locations (addresses) 0x100 and 0x200
+  - and store the result at address 0x300,
+  - we have two registers named a and b:
+
+#+begin_src 
+ load value at 0x100 into a
+ load value at 0x200 into b
+ add a and b, leaving result in a
+ store a at 0x300
+#+end_src
+
+Each of these operations is a CPU "opcode".
+The CPU reads the byte opcode from memory and executes it.
+
+Some opcodes:
+  - like the load and store ones, require parameters like the address to load from or store to.
+  - These addresses are stored in the program immediately following the opcode.
+
+As we progress, we're going to see that the instruction sizes (op code plus parameters) are different depending on the instruction (op code) and parameters.
+
+The above program is 4 instructions:
+  - The load and store instructions use 1 byte for opcode and
+  - 2 more for the addresses.
+  - The add uses just the one byte for the opcode (add b to a).
+
+Each instruction uses 1 or more "clock cycles",
+depending on the complexity of the operation.
+
+  - The load instruction requires a clock cycle to load the opcode,
+  - another 2 for each byte of the address,
+  - and another 2 to load the value from RAM at the address specified in the parameters,
+  - for 5 total clock cycles.
+  - The add instruction takes just 1 clock cycle.
+  - The store takes 5 as well.
+  
 * ray nasmtutorial
 
 https://cs.lmu.edu/~ray/notes/nasmtutorial/
