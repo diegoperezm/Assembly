@@ -484,7 +484,7 @@ When a program is launched:
 
 As the program needs more stack or more heap, the OS adds physical memory to the program's address space using the MMU. The program grows on demand.
 
-
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#paging-and-swapping][Paging And Swapping]]
 
 
 
