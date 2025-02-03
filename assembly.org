@@ -787,8 +787,11 @@ The operand is a register.
 mov rax, rbx ; moves contents of rbx register into the rax register
 #+end_src
 
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#direct-memory-operands-better-known-as-immediate-operands][Immediate operands (Direct Memmory operands)]]
 
-
+#+begin_src asm
+mov rax, 10 ; source operand is a constant
+#+end_src
 
 
 * ray nasmtutorial
