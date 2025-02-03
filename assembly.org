@@ -684,6 +684,104 @@ or
     - destination 
 
 
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#addressing-modes][Addressing Modes]]
+
+For example:
+ - Register operands indicate specific registers
+ -  but memory operands can be addressed through a variety of combinations of offsets and/or register contents.
+
+MOV instruction:
+  - which copies a value in a *register* _to_ *memory* or
+  - loads a value to a *register* _from_ *memory*
+
+The source and/or destination operand is specified using one of the addressing modes.
+
+The instruction-set/addressing.asm file contains example usage of the various addressing modes.
+
+#+begin_src asm
+;; NOTE that this is not a program meant to be run.  It is just a way to demonstrate
+;; that the instructions and addressing modes to assemble without error.
+
+        section .text
+global start
+start:
+        // immediate: operand is part of the instruction
+        ; immediate  (or direct) addressing mode 
+        ; you cannot store to a constant, so only the source may be a constant
+        mov rax, 10 	; source operand is a constant
+
+        // register: operand is in a register
+        ;; register addressing mode 
+        mov rax, rbx
+
+        // Address: is stored in a register (MOV AL, [BX])	
+        ; indirect addressing mode
+        ; one of the operands is the address of the memory location in a register
+        mov rax, [rbx]
+        mov [rbx], rax
+        ; invalid!
+        ; mov [rax], [rbx]
+
+        // Indexed: Uses a base register and an index (MOV AL, [BX+SI])
+        ; indirect with displacement
+        ; address = base + displacement
+        ;
+        ; typical use is to access structure elements (the displacement is the offset
+        ; to the structure member)
+        mov rax, [24+rbx] 	; base is rbx, displacement is 24
+        mov [24+rbx], rax
+
+        ; indirect with displacement and scaled index
+        mov rax, [array + rbx * 4]
+        mov [array + rbx * 4], rax
+
+        ; indirect with displacement in a second register
+        mov rax, [rbx + rcx]
+        mov [rbx + rcx], rax
+        
+        ; indirect with displacement in a second register scaled
+        mov rax, [rbx + rcx *4]
+        mov [rbx + rcx *4], rax
+        
+        ; indirect with displacement and another displacement in a second register scaled
+        mov rax, [24 + rbx + rcx *4]
+        mov [24 + rbx + rcx *4], rax
+        
+       section .bss 
+array: resb 8192
+        
+#+end_src  
+
+ 
+chatGPT
+
+ - NASM (Intel syntax) destination <- source
+
+#+begin_src 
+ -  An addressing mode determines how an instruction accesses operands:
+    - in memory or
+    - registers
+
+ - Common types (NASM, Intel syntax):
+
+ - Immediate: Operand is part of the instruction (MOV AL, 5)
+
+ - Register: Operand is in a register (MOV AX, BX)
+
+ - Direct: Address is specified (MOV AL, [1234H])
+
+ - Indirect: Address is stored in a register (MOV AL, [BX])
+
+ - Indexed: Uses a base register and an index (MOV AL, [BX+SI])
+
+ - Base-Relative: Combines base register and displacement (MOV AL, [BP+4])
+
+#+end_src
+
+
+
+
+
 
 
 * ray nasmtutorial
