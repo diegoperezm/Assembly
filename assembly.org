@@ -779,6 +779,13 @@ chatGPT
 #+end_src
 
 
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#register-operands][Register Operands]]
+
+The operand is a register.
+
+#+begin_src asm
+mov rax, rbx ; moves contents of rbx register into the rax register
+#+end_src
 
 
 
