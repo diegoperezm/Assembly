@@ -1168,7 +1168,6 @@ main:
 	.section	.note.GNU-stack,"",@progbits
 #+end_src
 
- 
 ** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#commonly-used-instructions][Commonly used instructions]]
 
 *** Arithmetic
@@ -1262,6 +1261,22 @@ POPF  ; pop stack into flags register
 PUSH  ; push a register on the stack
 PUSHF ; push flags register on the stack
 #+end_src
+
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#assembler-source-directives--and-macros][Assembler Source, Directives and Macros]]
+
+The assembler is a program that reads assembly source code and generates a binary output file or ELF .o file.
+
+NASM is a great free assembler, LLVM Assembler (as), and Gnu Assembler/as/gas (part of the gcc package) are two assemblers that are used for Linux and MacOS assembly development/programming. For all intents and purposes, LLVM and Gnu assemblers are identical. 
+
+There are two styles of assembly source for x64:
+ - Intel syntax
+    - expects operands to be specified as destination, source.
+
+ - AT&T syntax
+    - expects operands to be specified as source, destination.
+
+
+
 
 * ray nasmtutorial
 
