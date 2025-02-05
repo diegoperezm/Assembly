@@ -1169,7 +1169,100 @@ main:
 #+end_src
 
  
-*** https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#commonly-used-instructions
+** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#commonly-used-instructions][Commonly used instructions]]
+
+*** Arithmetic
+
+#+begin_src asm  
+ADC   ; add a value, plus 
+ADD   ; add two registers together
+DEC   ; decrement by 1
+DIV   ; unsigned divide
+IDIV  ; signed divide
+IMUL  ; signed multiply
+INC   ; increment by 1
+MUL   ; unsigned multiply
+NEG   ; two's complement (multiply by -1)
+SBB   ; subtract with borrow (carry flag)
+SUB   ; subtract
+LEA   ; load effective address (formed by some expression / addressing mode) into register
+#+end_src
+
+*** Boolen Algebra
+
+#+begin_src asm
+AND  ; logical AND to registers together
+NOT  ; one's complement (invert all the bits in the operand)
+OR   ; logical OR
+XOR  ; logical exclusive or
+TEST ; logical compare
+#+end_src
+
+*** Branching and subroutines 
+
+#+begin_src asm
+CALL    ; call a subroutine/function/procedure
+SYSCALL ; call an OS function (Linux, Mac)
+ENTER   ; make stack from for procedure parameters
+LEAVE   ; high level procedure exit
+RET     ; return from subroutine
+CMP     ; compare two operaands
+JA      ; jump if result of unsigned compare is above
+JAE     ; jump if result of unsigned compare is above or equal
+JB      ; jump if result of unsigned compare is below
+JBE     ; jump if result of unsigned compare is below or equal
+JC      ; jump if carry flag is set
+JE      ; jump if equal
+JG      ; jump if greater than 
+JGE     ; jump if greater than or equal
+JNC     ; jump if carry not set
+JMP     ; go to / jmp (simply loads the RPC register with the address)
+#+end_src
+
+*** Bit Manipulation 
+
+#+begin_src asm
+BT  ; bit test (test a bit)
+BTC ; bit test and complement
+BTR ; bit test and reset
+BTS ; bit test and set
+RCL ; rotate 9 bits (carry flag, 8 bits in operand) left count bits
+RCR ; rotate 9 bits (carry flag, 8 bits in operand) right count bits
+ROL ; rotate 8 bits in operand left count bits
+ROR ; rotate 8 bits in operand right count bits
+SAL ; arithmetic shift operand left count bits
+SAR ; arithmetic shift operand right count bits (maintains sign bit)
+SHL ; logical shift operand left count bits (same as SAL)
+SHR ; logical shift operand right count bits (does not maintain sign bit)
+#+end_src
+
+*** Register Manipulation, Casting/Conversions
+
+#+begin_src asm
+MOV  ; move register to register, move register to memory, move memory to register
+XCHG ; exchange register/memory with register
+CBW  ; convert byte to word
+CDQ  ; convert word to double word/convert double word to quad word
+#+end_src
+
+*** Flags Manipulation
+
+#+begin_src asm  
+CLC ; clear carry flag/bit in flags register
+CLD ; clear direction bit in flags register
+STC ; set carry flag
+STD ; set direction flag
+#+end_src
+
+*** Stack Manipulation
+
+#+begin_src asm
+POP   ; pop a register off the stack
+POPF  ; pop stack into flags register
+PUSH  ; push a register on the stack
+PUSHF ; push flags register on the stack
+#+end_src
+
 * ray nasmtutorial
 
 https://cs.lmu.edu/~ray/notes/nasmtutorial/
