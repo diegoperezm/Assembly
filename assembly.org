@@ -1088,18 +1088,79 @@ foo:
 	.section	.note.GNU-stack,"",@progbits
 #+end_src
 
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#indirect-with-displacement-and-scaled-index][Indirect with displacement and scaled index]]
+
+ - used to access array elements
+   - an array of bytes, each element  is 1 byte each
+   - an array of words, each element  is 2 bytes each 
+   - an array of dwords, each element is 4 bytes each 
+   - an array of qwords, each element is 8 bytes each 
+
+As you index the array, you have to "scale" the index before adding it to the base of the array.
+The scale operating assures we are addressing byte, word, dword, or qword elements properly.
+
+#+begin_src asm 
+; store dword in eax at rsi+ member(offset) + rbx x 4
+mov member(rsi, rbx, 4), eax   
+#+end_src
+
+The above example stores a dword into memory.
+We are accessing a struct member that is an array of dwords.
+The rbx register contains the index into the array, [0 ... array.length-1].
+The 4 is the scale factor, or size of the dword.
+
+Note that member may be 0 - in this case, rsi simply contains the address of the array.
 
 
 
+ 
+#+name: using_uint
+#+begin_src C 
+#include <stdio.h>
+#include <stdint.h>
+
+int main(void) {
+  uint8_t arr[] = { 2, 4, };
+  uint8_t a = arr[0];
+  uint8_t b = arr[1];
+  //printf("%u", b);
+  return 0; 
+
+}
+
+#+end_src
+
+#+RESULTS: using_uint
+
+#+begin_src sh :noweb yes :results verbatim :wrap src asm  :exports results 
+cat <<EOF > temp.c
+<<using_uint>>
+EOF
+gcc -S -masm=intel  -o - temp.c
+rm temp.c
+#+end_src
+
+#+RESULTS:
+#+begin_src asm
+	.file	"temp.c"
+	.intel_syntax noprefix
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB11:
+	.cfi_startproc
+	mov	eax, 0
+	ret
+	.cfi_endproc
+.LFE11:
+	.size	main, .-main
+	.ident	"GCC: (Debian 12.2.0-14) 12.2.0"
+	.section	.note.GNU-stack,"",@progbits
+#+end_src
 
 
-
-
-
-
-
-
-
+ 
 * ray nasmtutorial
 
 https://cs.lmu.edu/~ray/notes/nasmtutorial/
