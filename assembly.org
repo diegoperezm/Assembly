@@ -62,7 +62,7 @@ And *unsigned*:
  |     | signed value of -128/127 |                              | and terminating b |
  |     | Bit 7 the "sign bit":    |                              | 011111111b        |
  |     | - 1: negative            |                              | ----------------- |
- |     | - 2: positve             |                              | hexadecimal       |
+ |     | - 0: positve             |                              | hexadecimal       |
  |     |                          |                              | nybble:           |
  |     |                          |                              | - 4 bits (0-15)   |
  |     |                          |                              |                   |
@@ -683,7 +683,6 @@ or
     - source
     - destination 
 
-
 *** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#addressing-modes][Addressing Modes]]
 
 For example:
@@ -778,7 +777,6 @@ chatGPT
 
 #+end_src
 
-
 *** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#register-operands][Register Operands]]
 
 The operand is a register.
@@ -789,9 +787,317 @@ mov rax, rbx ; moves contents of rbx register into the rax register
 
 *** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#direct-memory-operands-better-known-as-immediate-operands][Immediate operands (Direct Memmory operands)]]
 
+This mode moves a constant into a register.
+The constant is encoded in the instruction, after the opcode.
+
 #+begin_src asm
 mov rax, 10 ; source operand is a constant
 #+end_src
+
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#indirect-with-displacement][Indirect with Displacement]]
+
+Register as the base address of a memory location, added to a fixed offset, to determine the address of a memory location to be operated on.
+
+The purpose of this addressing mode is to facilitate accessing a structure and its member.
+
+#+begin_src asm 
+mov rax, [rbx+24] ; access memory at 24 + contents of rbx
+#+end_src
+
+#+begin_src C :eval no 
+struct {
+  char *name,
+       *address,
+       *phone;
+} person;  
+
+person.name = nullptr;
+person.address = nullptr;
+person.phone = nullptr;
+#+end_src
+
+In assembly: 
+
+#+begin_src asm
+NAME equ 0
+ADDRESS equ 8
+PHONE equ 12
+
+mov rsi, person ; load address of person into RSI 
+mov rax, 0      ; nullptr
+mov NAME[rsi], rax
+mov ADDRESS[rsi], rax
+mov PHONE[rsi]. rax
+#+end_src
+
+Another use of this is for stack frames for a language such as "C", especially for calling subroutines.
+
+A subroutine may have arguments passed to it on the stack, by value (like an int) or reference (like an address of a struct or string or whatever).
+
+A subroutine may need its own local variables.
+When a subroutine is called recursively,
+each recursive call must prepare the stack so it has arguments to pass, and allow for the next iteration's local variables on the stack.
+
+The RBP register is used for stack frames when stack conventions are used for calling functions in "C".
+
+The calling function pushes arguments on the stack (right to left).
+That is, for foo(a, b, c);, the compiler will generate code to push c, then b, then a.
+
+#+begin_src asm
+	mov	DWORD PTR -4[rbp], 2     ;  a Stores 2 at [rbp-4] 
+	mov	DWORD PTR -8[rbp], 4     ;  b Stores 4 at [rbp-8] 
+	mov	DWORD PTR -12[rbp], 6    ;  c Stores 4 at [rbp-12] 
+	mov	edx, DWORD PTR -12[rbp]  ; c 
+	mov	ecx, DWORD PTR -8[rbp]   ; b 
+	mov	eax, DWORD PTR -4[rbp]   ; a
+#+end_src
+
+
+Upon entry to a function, RBP contains the stack frame pointer for the calling function.
+The compiler generates code to immediately push it. Then the RSP stack pointer is loaded into RBP.
+
+At this point, RBP points to the return address on the stack, and negative offsets from RBP are the arguments to the function.
+
+
+For local variables:
+ - the compiler generates a subtract to RSP to make the desired space on the stack.
+ - When the function calls another, RSP is after the allocated variables, so it all works.
+ - Positive offsets from RBP are used to access the local variables.
+
+To return:
+  - the compiler generates code to pop rbp (restore caller's stack frame) and returns.
+  - The calling code has to adjust RSP to remove the pushed arguments.
+ 
+
+Note:
+ AMD64/X64 use a *register scheme* for:
+  - passing arguments to functions and
+  - uses the stack when there are too many arguments to pass (not enough registers).
+  - See https://en.wikipedia.org/wiki/X86_calling_conventions.
+
+I present this information because you will likely run across stack frames,
+     especially when viewing GDB (command line debugger) backtraces.
+
+At&t:     
+
+#+begin_src asm
+// source
+void bar(int a, int b) {
+    int x, y;
+
+    x = 555;
+    y = a+b;
+}
+
+void foo(void) {
+    bar(111,222);
+}
+
+; compiles to:
+bar:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $16, %esp
+    movl    $555, -4(%ebp)
+    movl    12(%ebp), %eax
+    movl    8(%ebp), %edx
+    addl    %edx, %eax
+    movl    %eax, -8(%ebp)
+    leave
+    ret
+
+foo:
+    pushl   %ebp
+    movl    %esp, %ebp
+    subl    $8, %esp
+    movl    $222, 4(%esp)
+    movl    $111, (%esp)
+    call    bar
+    leave
+    ret
+#+end_src
+
+
+
+     
+#+name: foo
+#+begin_src C 
+#include  <stdint.h>
+
+int foo(uint8_t a, uint8_t b, uint8_t c);
+
+int main(void) {
+  uint8_t a = 2;
+  uint8_t b = 4;
+  uint8_t c = 6;  
+  foo(a,b,c);
+  return 0;
+}
+
+int foo(uint8_t a, uint8_t b, uint8_t c) {
+  return 0;
+}
+#+end_src
+
+#+begin_src sh :noweb yes :results verbatim :wrap src asm  :exports results 
+cat <<EOF > temp.c
+<<foo>>
+EOF
+gcc -S  -masm=intel  -o - temp.c
+rm temp.c
+#+end_src
+
+#+RESULTS:
+#+begin_src asm
+	.file	"temp.c"
+	.intel_syntax noprefix
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	.cfi_startproc
+	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	mov	rbp, rsp
+	.cfi_def_cfa_register 6
+	sub	rsp, 16
+	mov	BYTE PTR -1[rbp], 2
+	mov	BYTE PTR -2[rbp], 4
+	mov	BYTE PTR -3[rbp], 6
+	movzx	edx, BYTE PTR -3[rbp]
+	movzx	ecx, BYTE PTR -2[rbp]
+	movzx	eax, BYTE PTR -1[rbp]
+	mov	esi, ecx
+	mov	edi, eax
+	call	foo
+	mov	eax, 0
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	main, .-main
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB1:
+	.cfi_startproc
+	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	mov	rbp, rsp
+	.cfi_def_cfa_register 6
+	mov	ecx, esi
+	mov	eax, edx
+	mov	edx, edi
+	mov	BYTE PTR -4[rbp], dl
+	mov	edx, ecx
+	mov	BYTE PTR -8[rbp], dl
+	mov	BYTE PTR -12[rbp], al
+	mov	eax, 0
+	pop	rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE1:
+	.size	foo, .-foo
+	.ident	"GCC: (Debian 12.2.0-14) 12.2.0"
+	.section	.note.GNU-stack,"",@progbits
+#+end_src
+
+
+#+name: using_int 
+#+begin_src C 
+int foo(int a, int b, int c);
+
+int main(void) {
+  int a = 2;
+  int b = 4;
+  int c = 6;  
+  foo(a,b,c);
+  return 0;
+}
+int foo(int a, int b, int c){
+  return 0;
+}
+#+end_src
+
+#+begin_src sh :noweb yes :results verbatim :wrap src asm  :exports results 
+cat <<EOF > temp.c
+<<using_int>>
+EOF
+gcc -S -masm=intel  -o - temp.c
+rm temp.c
+#+end_src
+
+#+RESULTS:
+#+begin_src asm
+	.file	"temp.c"
+	.intel_syntax noprefix
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB0:
+	.cfi_startproc
+	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	mov	rbp, rsp
+	.cfi_def_cfa_register 6
+	sub	rsp, 16
+	mov	DWORD PTR -4[rbp], 2
+	mov	DWORD PTR -8[rbp], 4
+	mov	DWORD PTR -12[rbp], 6
+	mov	edx, DWORD PTR -12[rbp]
+	mov	ecx, DWORD PTR -8[rbp]
+	mov	eax, DWORD PTR -4[rbp]
+	mov	esi, ecx
+	mov	edi, eax
+	call	foo
+	mov	eax, 0
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	main, .-main
+	.globl	foo
+	.type	foo, @function
+foo:
+.LFB1:
+	.cfi_startproc
+	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	mov	rbp, rsp
+	.cfi_def_cfa_register 6
+	mov	DWORD PTR -4[rbp], edi
+	mov	DWORD PTR -8[rbp], esi
+	mov	DWORD PTR -12[rbp], edx
+	mov	eax, 0
+	pop	rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE1:
+	.size	foo, .-foo
+	.ident	"GCC: (Debian 12.2.0-14) 12.2.0"
+	.section	.note.GNU-stack,"",@progbits
+#+end_src
+
+
+
+
+
+
+
+
+
+
+
 
 
 * ray nasmtutorial
