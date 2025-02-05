@@ -1111,9 +1111,6 @@ The 4 is the scale factor, or size of the dword.
 
 Note that member may be 0 - in this case, rsi simply contains the address of the array.
 
-
-
- 
 #+name: using_uint
 #+begin_src C 
 #include <stdio.h>
@@ -1148,19 +1145,31 @@ rm temp.c
 	.globl	main
 	.type	main, @function
 main:
-.LFB11:
+.LFB0:
 	.cfi_startproc
+	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	mov	rbp, rsp
+	.cfi_def_cfa_register 6
+	mov	WORD PTR -4[rbp], 1026
+	movzx	eax, BYTE PTR -4[rbp]
+	mov	BYTE PTR -1[rbp], al
+	movzx	eax, BYTE PTR -3[rbp]
+	mov	BYTE PTR -2[rbp], al
 	mov	eax, 0
+	pop	rbp
+	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
-.LFE11:
+.LFE0:
 	.size	main, .-main
 	.ident	"GCC: (Debian 12.2.0-14) 12.2.0"
 	.section	.note.GNU-stack,"",@progbits
 #+end_src
 
-
  
+*** https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#commonly-used-instructions
 * ray nasmtutorial
 
 https://cs.lmu.edu/~ray/notes/nasmtutorial/
