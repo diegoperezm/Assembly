@@ -1275,8 +1275,48 @@ There are two styles of assembly source for x64:
  - AT&T syntax
     - expects operands to be specified as source, destination.
 
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#assembler-directives][Assembler Directives]]
 
 
+An assembler directive is not:
+ - Machine instructions
+ - These are used to convey information to the assembler to effect code generation as you prefer
+ - Are specific to the assembler you are using and
+ - The source code using these is not portable between assemblers
+
+gas (gnu/llvm) assembler
+ - default At&t 
+ - .intel_syntax directive  
+
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#section-type-options][Section Type [Options]]] 
+
+Specifies that the following instructions/directives apply to the specified section. 
+
+#+begin_src asm
+section .text
+section .bss execute
+section .rodata
+#+end_src
+
+The *execute* option marks this bit of .bss as read/write and execute permissions.
+
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#bits-16-bits-32-and-bits-64-use16-use32-use64][bits 16, bits 32, and bits 64, use16, use32 , use64]]
+
+These directives tell the assembler to generate instructions for the CPU running in the specified mode.
+
+When the system first boots, the CPU is in 16 bit mode.
+The instructions it executes at that point must be bits 16 or use16.
+
+A 32-bit operating system sets the CPU into 32 bit mode.
+The instructions it executes at that point must be bits 32 or use32.
+
+This document assumes 64-bit mode, so we use bits 64.
+In 64-bit mode, the assembler can generate either 64-bit or 32-bit instructions, whichever is appropriate.
+
+*** [[https://github.com/mschwartz/assembly-tutorial?tab=readme-ov-file#comments][Comments]]
+
+NASM:   semicolon (;) 
+GAS: =/* */= ,  =#=
 
 * ray nasmtutorial
 
